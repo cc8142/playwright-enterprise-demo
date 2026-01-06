@@ -2,6 +2,7 @@
 
 from playwright.sync_api import Page
 
+from config.settings import get_settings
 from pages.base_page import BasePage
 from pages.inventory_page import InventoryPage
 
@@ -11,6 +12,7 @@ class LoginPage(BasePage):
 
     def __init__(self, page: Page) -> None:
         super().__init__(page)
+        self._base_url = get_settings().base_url
         self._maps.update(
             {
                 "username_input": "[data-test='username']",
@@ -19,9 +21,9 @@ class LoginPage(BasePage):
             }
         )
 
-    def open(self, base_url: str) -> None:
+    def open(self) -> None:
         """Navigate to the login page."""
-        self.page.goto(base_url, wait_until="domcontentloaded")
+        self.page.goto(self._base_url, wait_until="domcontentloaded")
 
     def login(self, username: str, password: str) -> InventoryPage:
         """Log in and return the inventory page object."""

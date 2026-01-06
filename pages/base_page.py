@@ -1,11 +1,15 @@
 ﻿from __future__ import annotations
 
-from typing import Dict
+from typing import Dict, Optional
 
 from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import Locator
 from playwright.sync_api import Page
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+
+from config.settings import get_settings
+
+DEFAULT_TIMEOUT_MS = get_settings().timeout
 
 
 class BasePage:
@@ -27,9 +31,11 @@ class BasePage:
         name_or_selector: str,
         *,
         use_map: bool = True,
-        timeout_ms: int = 5000,
+        timeout_ms: Optional[int] = None,
     ) -> Locator:
         """Return a locator, waiting for the element to be attached."""
+        if timeout_ms is None:
+            timeout_ms = DEFAULT_TIMEOUT_MS
         selector = self.map(name_or_selector) if use_map else name_or_selector
         locator = self.page.locator(selector)
         try:
@@ -42,8 +48,10 @@ class BasePage:
         self,
         locator: Locator,
         selector: str,
-        timeout_ms: int,
+        timeout_ms: Optional[int],
     ) -> None:
+        if timeout_ms is None:
+            timeout_ms = DEFAULT_TIMEOUT_MS
         try:
             locator.wait_for(state="visible", timeout=timeout_ms)
         except PlaywrightTimeoutError as exc:
@@ -78,9 +86,11 @@ class BasePage:
         name_or_selector: str,
         *,
         use_map: bool = True,
-        timeout_ms: int = 5000,
+        timeout_ms: Optional[int] = None,
     ) -> None:
         """Wait for and click an element with a visible highlight."""
+        if timeout_ms is None:
+            timeout_ms = DEFAULT_TIMEOUT_MS
         selector = self.map(name_or_selector) if use_map else name_or_selector
         locator = self.page.locator(selector)
         self._wait_for_actionable(locator, selector, timeout_ms)
@@ -98,9 +108,11 @@ class BasePage:
         value: str,
         *,
         use_map: bool = True,
-        timeout_ms: int = 5000,
+        timeout_ms: Optional[int] = None,
     ) -> None:
         """Wait for and fill an input element with a visible highlight."""
+        if timeout_ms is None:
+            timeout_ms = DEFAULT_TIMEOUT_MS
         selector = self.map(name_or_selector) if use_map else name_or_selector
         locator = self.page.locator(selector)
         self._wait_for_actionable(locator, selector, timeout_ms)

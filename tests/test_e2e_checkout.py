@@ -12,7 +12,7 @@ from pages.login_page import LoginPage
 )
 def test_standard_user_can_checkout(page: Page, username: str, password: str) -> None:
     login_page = LoginPage(page)
-    login_page.open("https://www.saucedemo.com/")
+    login_page.open()
 
     inventory_page = login_page.login(username, password)
     assert inventory_page.is_inventory_visible(), "Inventory list should be visible."
