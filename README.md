@@ -1,7 +1,7 @@
 # Playwright Enterprise Demo
 
 这是一个自动化测试框架示例，基于 Playwright（Sync API）+ Pytest + Allure，
-采用严格 POM、类型标注和稳健的基础封装，面向面试展示和工程化实践。
+采用严格 POM、类型标注和稳健的基础封装，展示和工程化实践。
 
 ## 技术栈
 
