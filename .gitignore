@@ -1,0 +1,23 @@
+﻿# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+
+# Test artifacts
+allure-results/
+allure-report/
+artifacts/
+
+# OS
+.DS_Store
+Thumbs.db
