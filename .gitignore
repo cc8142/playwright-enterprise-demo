@@ -17,6 +17,10 @@ venv/
 allure-results/
 allure-report/
 artifacts/
+.pytest_cache/
+
+# Env
+.env
 
 # OS
 .DS_Store
