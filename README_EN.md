@@ -1,8 +1,8 @@
-# Playwright Enterprise Demo
+﻿# Playwright Enterprise Demo
 
-This repository showcases a production-ready UI automation framework built with
-Playwright (Sync API), Pytest, and Allure, following strict POM, type safety,
-and robust base abstractions suitable for enterprise teams.
+This repo showcases a production-grade UI automation framework built with
+Playwright (Sync API), Pytest, and Allure. It emphasizes strict POM, type safety,
+robust waits, and enterprise-ready failure evidence.
 
 ## Tech Stack
 
@@ -24,17 +24,41 @@ and robust base abstractions suitable for enterprise teams.
 ├── conftest.py
 ├── pyproject.toml
 ├── requirements.txt
+├── pytest.ini
 └── README_EN.md
 ```
 
 ## Key Engineering Practices
 
 - Strict POM: no raw selectors in tests
-- BasePage encapsulates explicit waits, error handling, and element highlighting
-- Auto screenshot + trace on failure (Allure attachments)
-- CI uploads `allure-results` and Playwright `artifacts`
+- BasePage wraps waits, error handling, and highlight for demo visibility
+- Failure evidence policy (default on):
+  - screenshot: only-on-failure
+  - trace: retain-on-failure
+  - video: retain-on-failure (optional)
+- CI uploads `allure-results` and `artifacts`
 
-## Local Setup
+## Configuration (multi-env)
+
+Supports `config/{dev,staging,prod}.yaml` and `ENV=staging` selection.
+YAML uses the same `APP_*` keys as environment variables (e.g. `APP_BASE_URL`).
+Secrets should be injected via environment variables or GitHub Secrets:
+
+```
+APP_BASE_URL=https://www.saucedemo.com/
+APP_TIMEOUT=10000
+APP_HEADLESS=true
+APP_BROWSER=chromium
+APP_USERNAME=CHANGEME
+APP_PASSWORD=CHANGEME
+APP_TRACE_MODE=retain-on-failure
+APP_VIDEO_MODE=off
+APP_ENV=dev
+```
+
+For local runs, copy `.env.example` to `.env` (not committed).
+
+## Local Run
 
 ### Install dependencies with Poetry
 
@@ -46,7 +70,7 @@ poetry run playwright install --with-deps
 ### Run tests
 
 ```
-poetry run pytest -q --alluredir=allure-results
+poetry run pytest
 ```
 
 ### Generate Allure report
@@ -60,15 +84,7 @@ allure generate allure-results -o allure-report --clean
 Workflow: `.github/workflows/playwright.yml`
 
 - Triggers on push/PR to `main`
-- Installs Poetry and dependencies
-- Installs Playwright browsers
-- Runs Pytest
-- Uploads `allure-results` and `artifacts` as workflow artifacts
-
-To generate Allure HTML in CI, add:
-
-```
-allure generate allure-results -o allure-report --clean
-```
-
-and upload `allure-report` as an artifact.
+- Poetry and Playwright browser cache
+- Parallel execution with pytest-xdist (`-n auto`)
+- Uploads `allure-results` and `artifacts`
+- Generates Allure HTML and publishes to GitHub Pages

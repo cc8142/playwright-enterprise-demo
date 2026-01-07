@@ -1,7 +1,7 @@
-# Playwright Enterprise Demo
+﻿# Playwright Enterprise Demo
 
-这是一个自动化测试框架示例，基于 Playwright（Sync API）+ Pytest + Allure，
-采用严格 POM、类型标注和稳健的基础封装，展示和工程化实践。
+这是一个企业级 UI 自动化测试框架示例，基于 Playwright（Sync API）+ Pytest + Allure。
+强调严格 POM、类型标注、稳定性与可追踪的失败证据策略，适用于面试与工程化展示。
 
 ## 技术栈
 
@@ -23,15 +23,39 @@
 ├── conftest.py
 ├── pyproject.toml
 ├── requirements.txt
+├── pytest.ini
 └── README.md
 ```
 
-## 关键设计
+## 关键工程实践
 
 - 严格 POM：测试代码不出现原生选择器
-- BasePage 统一封装等待、异常处理和高亮展示
-- 失败自动截图 + trace（Allure 附件）
-- CI 运行后上传 `allure-results` 与 `artifacts`
+- BasePage 统一封装等待、异常处理、高亮展示
+- 失败证据策略（默认开启）：
+  - screenshot: only-on-failure
+  - trace: retain-on-failure
+  - video: retain-on-failure（可选）
+- CI 上传 `allure-results` 与 `artifacts`，可追踪失败原因
+
+## 配置体系（多环境）
+
+支持 `config/{dev,staging,prod}.yaml`，运行时通过 `ENV=staging` 选择。
+YAML 使用与环境变量一致的 `APP_*` 键名（如 `APP_BASE_URL`）。
+敏感信息通过环境变量或 GitHub Secrets 注入：
+
+```
+APP_BASE_URL=https://www.saucedemo.com/
+APP_TIMEOUT=10000
+APP_HEADLESS=true
+APP_BROWSER=chromium
+APP_USERNAME=CHANGEME
+APP_PASSWORD=CHANGEME
+APP_TRACE_MODE=retain-on-failure
+APP_VIDEO_MODE=off
+APP_ENV=dev
+```
+
+本地运行时：复制 `.env.example` 为 `.env`（不会提交到仓库）。
 
 ## 本地运行
 
@@ -45,7 +69,7 @@ poetry run playwright install --with-deps
 ### 执行用例
 
 ```
-poetry run pytest -q --alluredir=allure-results
+poetry run pytest
 ```
 
 ### 生成 Allure 报告
@@ -59,15 +83,7 @@ allure generate allure-results -o allure-report --clean
 工作流：`.github/workflows/playwright.yml`
 
 - 触发：`main` 分支 Push / PR
-- 安装 Poetry 与依赖
-- 安装 Playwright 浏览器
-- 运行 Pytest
+- Poetry 缓存 + Playwright 浏览器缓存
+- 并行执行：pytest-xdist（`-n auto`）
 - 上传 `allure-results` 与 `artifacts`
-
-如需在 CI 中生成 Allure HTML 报告，可在工作流中增加：
-
-```
-allure generate allure-results -o allure-report --clean
-```
-
-并将 `allure-report` 作为 Artifact 上传。
+- 生成 Allure HTML 并发布到 GitHub Pages

@@ -19,6 +19,10 @@ allure-report/
 artifacts/
 .pytest_cache/
 
+# Tooling
+.mypy_cache/
+.ruff_cache/
+
 # Env
 .env
 

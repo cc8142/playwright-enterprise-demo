@@ -1,0 +1,4 @@
+﻿APP_BASE_URL: https://www.saucedemo.com/
+APP_TIMEOUT: 10000
+APP_HEADLESS: true
+APP_BROWSER: chromium
