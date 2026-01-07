@@ -1,0 +1,3 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"skipped","Wed Jan 07 03:33:50 UTC 2026","Wed Jan 07 03:33:50 UTC 2026","258","tests","test_e2e_checkout","","","","test_standard_user_can_complete_checkout",""
+"skipped","Wed Jan 07 03:33:50 UTC 2026","Wed Jan 07 03:33:50 UTC 2026","258","tests","test_login","","","","test_standard_user_login_success",""
