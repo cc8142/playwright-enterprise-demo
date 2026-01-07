@@ -42,6 +42,7 @@ robust waits, and enterprise-ready failure evidence.
 
 Supports `config/{dev,staging,prod}.yaml` and `ENV=staging` selection.
 YAML uses the same `APP_*` keys as environment variables (e.g. `APP_BASE_URL`).
+`dev` includes public SwagLabs demo credentials for clone-and-run; override via env or `.env`.
 Secrets should be injected via environment variables or GitHub Secrets:
 
 ```

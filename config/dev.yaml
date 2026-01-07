@@ -2,3 +2,5 @@
 APP_TIMEOUT: 10000
 APP_HEADLESS: true
 APP_BROWSER: chromium
+APP_USERNAME: standard_user
+APP_PASSWORD: secret_sauce

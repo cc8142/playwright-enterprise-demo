@@ -41,6 +41,7 @@
 
 支持 `config/{dev,staging,prod}.yaml`，运行时通过 `ENV=staging` 选择。
 YAML 使用与环境变量一致的 `APP_*` 键名（如 `APP_BASE_URL`）。
+`dev` 默认使用公开的 SwagLabs 账号，可直接运行；如需覆盖，使用环境变量或 `.env`。
 敏感信息通过环境变量或 GitHub Secrets 注入：
 
 ```
