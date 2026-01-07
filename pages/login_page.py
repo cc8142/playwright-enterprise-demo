@@ -35,5 +35,4 @@ class LoginPage(BasePage):
         self.fill("username_input", username)
         self.fill("password_input", password)
         self.click("login_button")
-        self.page.wait_for_url("**/inventory.html", timeout=get_settings().timeout)
         return InventoryPage(self.page)

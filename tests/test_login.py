@@ -14,6 +14,8 @@ def test_standard_user_login_success(page: Page) -> None:
 
     username = settings.app_username.get_secret_value()
     password = settings.app_password.get_secret_value()
+    if not username or not password or username == "CHANGEME" or password == "CHANGEME":
+        pytest.skip("Missing credentials for SauceDemo.")
     login_page.login(username, password)
 
     assert "inventory.html" in page.url, "Login should redirect to inventory page."

@@ -13,6 +13,8 @@ def test_standard_user_can_complete_checkout(page: Page) -> None:
 
     username = settings.app_username.get_secret_value()
     password = settings.app_password.get_secret_value()
+    if not username or not password or username == "CHANGEME" or password == "CHANGEME":
+        pytest.skip("Missing credentials for SauceDemo.")
     inventory_page = login_page.login(username, password)
 
     inventory_page.add_to_cart("Sauce Labs Backpack")
