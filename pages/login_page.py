@@ -13,11 +13,16 @@ class LoginPage(BasePage):
     def __init__(self, page: Page) -> None:
         super().__init__(page)
         self._base_url = get_settings().base_url
+        self.Maps()
+
+    def Maps(self) -> None:
+        """Define element selectors for the login page."""
+        _ = self._base_url
         self._maps.update(
             {
-                "username_input": "[data-test='username']",
-                "password_input": "[data-test='password']",
-                "login_button": "[data-test='login-button']",
+                "username_input": "#user-name",
+                "password_input": "#password",
+                "login_button": "#login-button",
             }
         )
 
@@ -30,4 +35,5 @@ class LoginPage(BasePage):
         self.fill("username_input", username)
         self.fill("password_input", password)
         self.click("login_button")
+        self.page.wait_for_url("**/inventory.html", timeout=get_settings().timeout)
         return InventoryPage(self.page)
